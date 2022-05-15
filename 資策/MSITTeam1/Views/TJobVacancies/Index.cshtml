@@ -1,0 +1,276 @@
+﻿@addTagHelper *, MSITTeam1
+@model List<MSITTeam1.ViewModels.TJobVacanciesViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+@section Style{
+    <link rel="stylesheet" href="~/css/JobSearchList.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <style>
+        .box {
+            width: 300px;
+            /*padding: 10px;*/
+            /*border: #4caf50 2px solid;*/
+        }
+
+        .ellipsis {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3; /*多少行數之後才開始省略*/
+            -webkit-box-orient: vertical;
+            white-space: normal;
+        }
+    </style>
+}
+
+<main>
+    <div class="container">
+        <form name="searchBar">
+            <div class="row align-items-center">
+                <div class="col-4">
+                    <select class="form-control" id="selectJobDirect" name="ddlJobListId">
+                        <option value="" style="display:none" selected>職缺類型</option>
+                    </select>
+                </div>
+                <div class="col-4">
+                    <select class="form-control" id="selectCity" name="ddlCity">
+                        <option value="" style="display:none" selected>地區</option>
+                    </select>
+                </div>
+                <div class="form-group justify-content-center py-4 col-4" style="margin-bottom: 0;">
+                    <div class="">
+                        <div class="input-group input-group-rounded">
+                            <input type="text" placeholder="Java, C#, BigData..." name="txtSearchText" class="form-control" style="border-radius:.25rem">
+                            <span class="input-group-btn"><button class="btn btn-primary" type="submit" id="SearchButton"><i class="fas fa-search"></i></button></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-12">
+                <div class="filter-tags-c">
+                    <ul id="filter-tags-list"></ul>
+                    <p class="clear-tags" id="js-clear-tags"> Clear</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <ul class="col-12" id="job-list">
+                @{
+                    int rowCount = 0;
+
+                }
+                @if (Model.Count != 0)
+                {
+
+                    @foreach (var item in Model)
+                    {
+                        rowCount++;
+                        int rowNumber = rowCount;
+                        var lastModifyTime = (DateTime.Now - item.FModifyTime).Days.ToString();
+                        <li class="job-card new featured" style="align-items:stretch">
+                            <div class="job-card__info">
+                                <div class="d-md-flex">
+                                    <div class="img-c">
+                                        <img src="~/images/company/@item.FCompanyLogo" />
+                                    </div>
+                                    <div style="width:85%">
+                                        <form name="jobListInfo">
+                                            <h6 name="@item.FJobName">@item.FJobName</h6>
+                                            <div class="d-flex align-items-center">
+                                                <p>@item.FCompanyName</p>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <p>@item.FJobDirect</p>
+                                            </div>
+                                            <div>
+                                                <p class="ellipsis">@item.FOther</p>
+                                            </div>
+                                            <ul>
+                                                <li>@(lastModifyTime)天前更新</li>
+                                                <li>@item.FEmployeeType</li>
+                                                <li>@item.FWorkExp</li>
+                                            </ul>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="info-section col-4 d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="location-section">
+                                        <i class="fa fa-map-marker-alt"></i>
+                                        <span class="middot">
+                                            <abbr title="@(item.FCity + item.FDistrict + item.FWorkAddress)">@(item.FCity + item.FDistrict + item.FWorkAddress)</abbr>
+                                        </span>
+                                    </div>
+                                    <div class="number-for-hire-section">
+                                        <i class="fa fa-user"></i>
+                                        <abbr title="需求人數">10</abbr>
+                                    </div>
+                                    <div class="job-salary-section">
+                                        <i class="fas fa-dollar-sign"></i>
+                                        <span class="job-salary">@(Convert.ToInt32(item.FSalaryMin)/1000)K ~ @(Convert.ToInt32(item.FSalaryMax)/1000)K TWD/月</span>
+                                    </div>
+                                </div>
+                                <div class="justify-content-end">
+                                    <form>
+                                        <input type="hidden" name="txtJobId" asp-for="@item.Fid" />
+                                        @*<input type="hidden" name="txtJobName" asp-for="@item.FJobName" />
+                                            <input type="hidden" name="txtCompanyTaxid" asp-for="@item.FCompanyTaxid" />*@
+                                        <button type="submit" asp-action="Detail" class="btn btn-info m-b-10 m-l-5 btn-for-Detail">檢視職缺</button>
+                                        <button type="button" class="btn btn-info m-b-10 m-l-5 applyButton" data-toggle="modal" data-target="#jobModel@(rowNumber)" onclick="GetResumeData(@(rowNumber))">我要應徵</button>
+                                    </form>
+                                    <!-- 修改Modal -->
+                                    <div class="modal fade" id="jobModel@(rowNumber)" tabindex="-1" aria-labelledby="ProductEditModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="ProductEditModalLabel">學員求職信</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <vc:job-apply job-id="@item.Fid" job-name="@item.FJobName" company-taxid="@item.FCompanyTaxid" row-count="@rowNumber"></vc:job-apply>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                }
+            else
+            {
+
+                <li>
+                    <div class="justify-content-center">
+                        <h2>無任何相符的職缺</h2>
+                    </div>
+                </li>
+            }
+            </ul>
+        </div>
+        <div id="ProductPagination" class="row my-4"></div>
+    </div>
+</main>
+@section Scripts{
+
+    @*套用版面的原生js*@
+    <script src="~/js/JobSearchList.js"></script>
+
+    @*flatpickr的js*@
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        $("#startTime").flatpickr({
+            enableTime: true,
+            noCalendar: true,
+            minuteIncrement: 30,
+            onchange: function (dstr, dobjs, fp) {
+                let d = new Date();
+                let mins = d.getMinutes();
+                if (mins % 30) {
+                    d.setMinutes(30 * Math.round(d.getMinutes() / 30));
+                }
+            }
+            //dateFormat: "h:i",
+        });
+
+        $("#endTime").flatpickr({
+            enableTime: true,
+            noCalendar: true,
+            minuteIncrement: 30,
+            //dateFormat: "h:i",
+        });
+
+
+    </script>
+
+
+    @*透過ajax載入DropDownList*@
+    <script>
+        let selectJobDirect = document.querySelector('#selectJobDirect');
+        let selectCity = document.querySelector('#selectCity');
+
+        $.ajax({
+            url: '@Url.Content("~/TJobVacancies/JobDirectDropDownList")',
+            method:'post',
+            dataType:'json',
+            success: function (datas) {
+                datas.forEach((item) => {
+                    let opt = new Option(item.fJobDirect, item.jobListId);
+                    selectJobDirect.options.add(opt);
+                });
+            }
+        }).done((data) => {
+            console.log(data)
+        })
+
+        $.ajax({
+            url: '@Url.Content("~/TJobVacancies/CityDropDownList")',
+            method:'post',
+            dataType:'json',
+            success: function (datas) {
+                datas.forEach((item) => {
+                    let opt = new Option(item, item);
+                    selectCity.options.add(opt);
+                });
+            }
+        }).done((data) => {
+            console.log(data);
+        })
+    </script>
+
+    @*.applyButton的履歷DropDownList載入*@
+    <script>
+        function GetResumeData(rowNumber) {
+            let selectResume = document.querySelector(`#selectResume${rowNumber}`);
+            selectResume.options.length = 0;
+                $.ajax({
+                    url: "@Url.Content("~/TJobVacancies/ResumeDropDownList")",
+                    method: 'post',
+                    dataType: 'json',
+                    success: function (datas) {
+                        datas.forEach((item) => {
+                            let opt = new Option(item.resumeName, item.resumeId);
+                            selectResume.options.add(opt);
+                        });
+                    }
+                }).done((data) => {
+                    console.log(data);
+                })
+                console.log(rowNumber);
+        }
+
+    </script>
+
+    @*頁面底部換頁*@
+    @if (@Model.FirstOrDefault() != null)
+    {
+        <script>
+            $(function () {
+                initPagination('.job-card', 10, '#ProductPagination')
+            });
+        </script>
+    }
+
+    @*以下為程式碼設定結束時間不得晚於開始時間，未成功待研究*@
+    @*<script>
+            let maxIndex = $("#ddlendTime option:last").attr("index");
+            let checkIndex = $("#ddlstartTime").get(0).selectedIndex;
+            $("#ddlstartTime").change(function () {
+                console.log(maxIndex);
+                for (let i = 0; i <= maxIndex; i++) {
+                    let eachOptionIndex = $(`#ddlendTime option[index=${i}]`).attr("index");
+                    console.log(eachOptionIndex);
+                    //if ()
+                }
+            })
+        </script>*@
+}

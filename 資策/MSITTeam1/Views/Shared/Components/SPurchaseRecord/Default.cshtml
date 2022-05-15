@@ -1,0 +1,214 @@
+﻿@addTagHelper *, MSITTeam1
+@*@model IEnumerable<MSITTeam1.ViewModels.OrderAndOrderDetailViewModel>*@
+@using MSITTeam1.ViewModels
+@model OrderAndOrderDetailViewModel
+
+<style>
+    .filters {
+        font-family: sans-serif;
+    }
+
+    .filters-content {
+        margin: 2rem 0 2.5rem;
+        padding: 0.375rem;
+        border-radius: 0.75rem;
+        display: flex;
+        justify-content: space-between;
+        -moz-column-gap: 0.5rem;
+        column-gap: 0.5rem;
+    }
+
+    .filters__button {
+        width: 100%;
+        border: none;
+        outline: none;
+        padding: 1rem;
+        background-color: #EFEFEF;
+        transition: 0.3s;
+        border-radius: 0.5rem;
+    }
+
+        .filters__button:hover {
+            background-color: #ed731a;
+            color: white;
+        }
+
+    /* Hide*/
+    .filters [data-content] {
+        display: none;
+    }
+
+    [data-content].is-active[data-content] {
+        display: grid;
+    }
+
+    [data-target].is-active {
+        background-color: #1e3c84;
+        color: #fff;
+    }
+</style>
+<h3>購買紀錄</h3>
+<div class="container">
+    <section class="filters">
+        <ul class="filters-content">
+            <button class="filters__button is-active" data-target="#projects">
+                產品訂單
+            </button>
+            <button class="filters__button" data-target="#skills">
+                課程訂單
+            </button>
+        </ul>
+        <div>
+            @{
+                var proID = "";
+                string pid = "";
+                string pidDetail = "";
+                <div data-content class="is-active" id="projects">
+                    @foreach (var item in Model.order)
+                    {
+                        pid = item.OrderId;
+                        pidDetail = $"POrder{item.OrderId}";
+                        <div class="oneOrder border px-3 my-3">
+                            <div class="row bg-light p-3 align-items-center">
+                                <div class="col-md-4">
+                                    <span class="font-weight-bold">訂單號碼：</span>@item.OrderId
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="font-weight-bold">日期：</span>@Html.DisplayFor(modelItem => item.Date, "Date")
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="font-weight-bold">總額：</span>@item.TotalPrice
+                                </div>
+                                <div class="col-md-2">
+                                    <button id="@item.OrderId" class="btn btn-info">詳情</button>
+                                </div>
+                            </div>
+                            <div id="@pidDetail" class="row align-items-center  p-3 d-none">
+                                <div class="col-md-4 py-2">
+                                    <span class="font-weight-bold">付款方式：</span>@item.PayMethod
+                                </div>
+                                <div class="col-md-4 py-2">
+                                    <span class="font-weight-bold">寄送方式：</span>@item.ShipBy
+                                </div>
+                                <div class="col-md-4 py-2">
+                                    <span class="font-weight-bold">收件人：</span>@item.Recipient
+                                </div>
+                                <div class="col-md-4 py-2">
+                                    <span class="font-weight-bold">折扣：</span>@item.Discount
+                                </div>
+                                <div class="col-md-8 py-2">
+                                    <span class="font-weight-bold">地址：</span>@item.ShipTo
+                                </div>
+                                <div class="col-12">
+                                    <h5 class="my-3 mb-2 font-weight-bold pb-2" style="border-bottom: solid  lightgray 2px ">商品清單</h5>
+                                </div>
+                                @foreach (var item2 in Model.orderDetail)
+                                {
+                                    if (item2.OrderId == item.OrderId)
+                                    {
+
+                                        @foreach (var item3 in Model.product)
+                                        {
+
+                                            if (item3.ProductId == item2.ProductId && proID != item3.ProductId)
+                                            {
+                                                <div class="col-md-2 my-2">
+                                                    <img src="@item3.ImgPath" />
+                                                </div>
+                                                <div class="col-md-3 my-2">@item3.Name</div>
+                                            }
+                                            proID = item3.ProductId;
+                                        }
+                                        int p = (int)(item2.Price);
+                                        int q = (int)(item2.Qty);
+                                        int t = p * q;
+                                        <div class="col-md-2 my-2">NT$@Html.DisplayFor(modelItem => item2.Price, "Money")</div>
+                                        <div class="col-md-3 my-2">@item2.Qty 個</div>
+                                        <div class="col-md-2 my-2">NT$@t.ToString("###,###,##0")</div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <script src="~/js/jquery.js"></script>
+                        <script>
+                                   $("#@pid").click(function () {
+                                   $(this).parents().find("#@pidDetail").toggleClass("d-none");
+                                   })
+                        </script>
+                    }
+                    <div id="POrderPagination" class="row my-4"></div>
+                </div>
+                <div data-content id="skills">
+                    @foreach (var item in Model.classOrder)
+                    {
+                        pid = item.OrderId;
+                        pidDetail = $"POrder{item.OrderId}";
+                        <div class="ConeOrder border px-3 my-3">
+                            <div class="row bg-light p-3 align-items-center">
+                                <div class="col-md-4">
+                                    <span class="font-weight-bold">訂單號碼：</span>@item.OrderId
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="font-weight-bold">日期：</span>@Html.DisplayFor(modelItem => item.Date, "Date")
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="font-weight-bold">總額：</span>@item.TotalPrice
+                                </div>
+                                <div class="col-md-2">
+                                    <button id="@item.OrderId" class="btn btn-info">詳情</button>
+                                </div>
+                            </div>
+                            <div id="@pidDetail" class="row align-items-center  p-3 d-none">
+                                <div class="col-12 py-2">
+                                    <span class="font-weight-bold">折扣：</span>@item.Discount
+                                </div> 
+                                <div class="col-12">
+                                    <h5 class="my-3 mb-2 font-weight-bold pb-2" style="border-bottom: solid  lightgray 2px ">課程清單</h5>
+                                </div>
+                                @foreach (var item2 in Model.classOrderDetail)
+                                {
+                                    if (item2.OrderId == item.OrderId)
+                                    {
+
+                                        @foreach (var item3 in Model.ClassInfo)
+                                        {
+
+                                            if (item3.FClassExponent == item2.ClassExponent && proID != item3.FClassExponent)
+                                            {
+                                                <div class="col-md-2 my-2">
+                                                    <img src="@item3.FClassPhotoPath" />
+                                                </div>
+                                                <div class="col-md-6 my-2">@item3.FClassname</div>
+                                            }
+                                            proID = item3.FClassExponent;
+                                        }
+                                        int p = (int)(item2.Price);
+                                        int q = (int)(item2.Qty);
+                                        //int t = p * q;
+                                        <div class="col-md-4 my-2">NT$@Html.DisplayFor(modelItem => item2.Price, "Money")</div>
+                                        @*<div class="col-md-2 my-2">NT$@t.ToString("###,###,##0")</div>*@
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <script src="~/js/jquery.js"></script>
+                        <script>
+                                   $("#@pid").click(function () {
+                                   $(this).parents().find("#@pidDetail").toggleClass("d-none");
+                                   })
+                        </script>
+                    }
+                    <div id="CPOrderPagination" class="row my-4"></div>
+                </div>
+            }
+        </div>
+    </section>
+</div>
+<script>
+    $(function () {
+        initPagination('.oneOrder', 5, '#POrderPagination')
+    });
+    $(function () {
+        initPagination('.ConeOrder', 5, '#CPOrderPagination')
+    });
+</script>

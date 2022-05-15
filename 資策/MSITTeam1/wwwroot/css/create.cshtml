@@ -1,0 +1,253 @@
+﻿@model MSITTeam1.ViewModels.CStudentResumeViewModel
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap" rel="stylesheet">
+
+<div class="resumebar">
+    <div class="pagination-container full-width-container">
+        <div class="sized-container">
+            <div class="pagination"></div>
+        </div>
+    </div>
+    <div class="viewport full-width-container">
+        <ul class="slide-container">
+            <li class="slide" data-tag="基本資料">
+                <div class="sized-container">
+                    <div class="row data">
+                        <div class="col-4">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <input type="hidden" asp-for="MemberId" id="MemberId" />
+                            <div class="form-group">
+                                <label asp-for="fName" class="control-label"></label>
+                                <input id="fName" asp-for="fName" class="form-control" />
+                                <span asp-validation-for="fName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="fGender" class="control-label"></label>
+                                <input id="fGender" asp-for="fGender" class="form-control" type="text" />
+                                <span asp-validation-for="fGender" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="fBirthDate" class="control-label"></label>
+                                <input id="fBirthDate" asp-for="fBirthDate" class="form-control" type="text" />
+                                <span asp-validation-for="fBirthDate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="fEmail" class="control-label"></label>
+                                <input id="fEmail" asp-for="fEmail" class="form-control" />
+                                <span asp-validation-for="fEmail" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label asp-for="fPhone" class="control-label"></label>
+                                <input id="fPhone" asp-for="fPhone" class="form-control" />
+                                <span asp-validation-for="fPhone" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="fAddress" class="control-label"></label>
+                                <input id="fAddress" asp-for="fAddress" class="form-control" />
+                                <span asp-validation-for="fAddress" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="fAutobiography" class="control-label"></label>
+                                <textarea id="fAutobiography" asp-for="fAutobiography" class="form-control"> </textarea>
+                                <span asp-validation-for="fAutobiography" class="text-danger"></span>
+                            </div>
+
+                        </div>
+                        <div class="col-4">
+                            <form name="file" enctype="multipart/form-data">
+                                <div class="image-upload">
+                                    <label for="file-input">
+                                        <img id="blah" class="img-thumbnail" src="/images/student/@Model.fPortrait" title="變更圖片" alt="您的圖片" />
+                                    </label>
+                                    <input id="file-input" type="file" name="photo" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <button class="savebtn my-3" id="savechanges">儲存</button>
+                </div>
+            </li>
+            <li class="slide" data-tag="經歷">
+                <div class="sized-container">
+                    <div class="row data">
+                        <div class="col-4">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <input type="hidden" asp-for="MemberId" id="MemberId" />
+                            <div class="form-group">
+                                <label asp-for="CompanyName" class="control-label"></label>
+                                <input id="CompanyName" asp-for="CompanyName" class="form-control" />
+                                <span asp-validation-for="CompanyName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CompanyDepartment" class="control-label"></label>
+                                <input id="CompanyDepartment" asp-for="CompanyDepartment" class="form-control" type="text" />
+                                <span asp-validation-for="CompanyDepartment" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="JobTitle" class="control-label"></label>
+                                <input id="JobTitle" asp-for="JobTitle" class="form-control" type="text" />
+                                <span asp-validation-for="JobTitle" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="EmploymentFrom" class="control-label"></label>
+                                <input id="EmploymentFrom" asp-for="EmploymentFrom" class="form-control" />
+                                <span asp-validation-for="EmploymentFrom" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label asp-for="EmploymentTo" class="control-label"></label>
+                                <input id="EmploymentTo" asp-for="EmploymentTo" class="form-control" />
+                                <span asp-validation-for="EmploymentTo" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="JobDescription" class="control-label"></label>
+                                <textarea id="JobDescription" asp-for="JobDescription" class="form-control" ></textarea>
+                                <span asp-validation-for="JobDescription" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+
+                        </div>
+                    </div>
+                    <button class="savebtn my-3" id="createWork">新增</button>
+                </div>
+            </li>
+            <li class="slide" data-tag="學歷">
+                <div class="sized-container">
+                    <h1>Lets get a little more in depth.</h1>
+                    <h2>Information about this section.</h2>
+                </div>
+            </li>
+            <li class="slide" data-tag="語言">
+                <div class="sized-container">
+                    <h1>Tell us about where you've worked before.</h1>
+                    <h2>Information about this section.</h2>
+                </div>
+            </li>
+            <li class="slide" data-tag="技能">
+                <div class="sized-container">
+                    <h1>Describe your formal education.</h1>
+                    <h2>Information about this section.</h2>
+                </div>
+            </li>
+            <li class="slide" data-tag="作品">
+                <div class="sized-container">
+                    <h1>Mention any additional comments.</h1>
+                    <h2>Information about this section.</h2>
+                </div>
+            </li>
+            <li class="slide" data-tag="樣式">
+                <div class="sized-container">
+                    <h1>Confirm your application.</h1>
+                    <h2>Information about this section.</h2>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="full-width-container ">
+        <div class="button-container sized-container">
+            <button class="next">下一步</button>
+            <button class="previous">上一步</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+<script>
+        ////圖片瀏覽
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {  //reader加載成功
+                    $('#blah').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#file-input").change(function () {
+            readURL(this);
+        });
+
+    //// 儲存基本資料
+    $("#savechanges").click(() => {
+        var file_data = $("#file-input").prop("files")[0];
+        var form_data = new FormData();
+        form_data.append("photo", file_data);
+        //var formData = new FormData(document.file);
+        //formData.enctype="multipart/form-data";
+        //formData.append('photo', $('#file-input')[0].files[0]);
+
+        var jsondata = JSON.stringify({
+            MemberId:$("#MemberId").val(),
+            fName:$("#fName").val(),
+            fGender: $("#fGender").val(),
+            fBirthDate: $("#fBirthDate").val(),
+            fEmail: $("#fEmail").val(),
+            fPhone: $("#fPhone").val(),
+            fAddress: $("#fAddress").val(),
+            fAutobiography: $("#fAutobiography").val(),
+        })
+        $.ajax({
+            url: "@Url.Content("~/StudentResume/Edit")",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: jsondata /*,formData*/
+         }).done(function (data) {
+            Swal.fire({
+
+                        icon: 'success',
+                        title: '修改成功',
+                        showConfirmButton: false,
+                        timer: 1500
+                        })
+        })
+        $("row data").load("@Url.Content("~/StudentResume/Create")");
+    })
+    /////儲存工作經歷
+    $("#createWork").click(()=>{
+        var jsondata = JSON.stringify({
+            WorkMemberId:$("#MemberId").val(),
+            CompanyName:$("#CompanyName").val(),
+            CompanyDepartment:$("#CompanyDepartment").val(),
+            JobTitle:$("#JobTitle").val(),
+            EmploymentFrom:$("#EmploymentFrom").val(),
+            EmploymentTo:$("#EmploymentTo").val(),
+            JobDescription:$("#JobDescription").val()
+            })
+            $.ajax({
+            url: "@Url.Content("~/StudentResume/CreateWork")",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: jsondata 
+         }).done(function (data) {
+            Swal.fire({
+
+                        icon: 'success',
+                        title: '新增成功',
+                        showConfirmButton: false,
+                        timer: 1500
+                        })
+        })
+        //$("row data").load("@Url.Content("~/StudentResume/Create")");
+        })
+    
+
+
+</script>
+}
+
+
+
+
+

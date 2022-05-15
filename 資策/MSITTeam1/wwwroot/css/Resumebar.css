@@ -1,0 +1,291 @@
+﻿@charset "UTF-8";
+
+.resumebar {
+    font-family: "TrebuchetMS", trebuchet, sans-serif;
+    box-sizing: border-box;
+}
+
+
+.sized-container h1, h2 {
+    text-align: center;
+}
+
+.sized-container h1 {
+    font-size: 24px;
+    line-height: 30px;
+    font-weight: bold;
+}
+
+.sized-container h2 {
+    font-size: 18px;
+    line-height: 25px;
+    margin-top: 20px;
+}
+
+.resumebar button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 0;
+    border: solid 1px transparent;
+    padding: 14px 30px;
+    background-color: #1e3c84;
+    color: #FFFFFF;
+    text-transform: capitalize;
+    font-size: 18px;
+    line-height: 22px;
+    outline: none;
+    cursor: pointer;
+    transition: all .3s linear;
+    width: 150px;
+}
+
+    .resumebar button:hover {
+        /*background-color: #1A7F75;*/
+        color: #1e3c84;
+        z-index: 4;
+        background-color: #ffffff;
+        border: #1e3c84 solid 1px;
+        cursor: pointer;
+    }
+
+    .resumebar button.previous {
+        background-color: #1e3c84;
+        float: left;
+    }
+
+        .resumebar button.previous:hover {
+            color: #1e3c84;
+            background-color: #ffffff;
+        }
+
+    .resumebar button.savebtn {
+        margin: auto;
+        width: 150px;
+    }
+
+.full-width-container {
+    width: 100%;
+    min-width: 320px;
+    background-color:white;
+}
+
+.sized-container {
+    max-width: 1300px;
+    width: 100%;
+    margin: 0 auto;
+    padding-right: 20px;
+}
+
+    .sized-container .savebtn {
+        background: #ed731a;
+    }
+
+    .sized-container .saveworkbtn {
+        background: #ed731a;
+        float: right;
+    }
+
+
+.sized-container .creatworkbtn {
+    background: #ed731a;
+    float: left;
+}
+
+.btndiv {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.btndiv2 {
+    text-align: center;
+    padding-bottom: 15px;
+}
+
+.slide-container {
+    position: relative;
+    left: 0;
+    height: 600px;
+}
+
+.slide {
+    float: left;
+}
+
+    .slide .sized-container {
+        padding: 20px 20px 0px 0px;
+    }
+
+        .slide .sized-container edu {
+            padding: 40px 20px 0px 0px;
+        }
+
+        .button-container {
+            border-top: 1px solid black;
+            overflow: hidden;
+            padding-top: 30px;
+        }
+
+    .button-container button {
+        float: right;
+        margin-left: 0px;
+        margin-bottom: 30px;
+    }
+
+.resumebar .tableBtn {
+    border: 0;
+    padding: 0px 5px;
+    background-color: #1e3c84;
+    color: #FFFFFF;
+    text-transform: capitalize;
+    font-size: 18px;
+    line-height: 22px;
+    width: 50px;
+    height:50px;
+    margin-right: 3px;
+}
+
+.pagination-container {
+    margin-top: 60px;
+}
+
+.pagination {
+    width: 100%;
+    text-align: center;
+    padding: 0 25px;
+}
+
+.indicator {
+    width: 30px;
+    height: 25px;
+    border: 4px solid #fab684;
+    border-radius: 50%;
+    display: inline-block;
+    transition: all 0.3s;
+    position: relative;
+}
+
+    .indicator .tag {
+        position: absolute;
+        top: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: lightgray;
+        white-space: nowrap;
+        font-family: "Yusei Magic",sans-serif;
+        font-size: 17px;
+        /*font-weight: bold;*/
+    }
+
+    .indicator.active, .indicator.complete {
+        border-color: #ed731a;
+        background: #ed731a;
+    }
+
+        .indicator.active .tag, .indicator.complete .tag {
+            color: #555555;
+        }
+
+        .indicator.complete:after {
+            /*content: "✓";*/
+            background: #ed731a;
+            position: absolute;
+            color: #555555;
+            left: 4px;
+            top: -3px;
+            font-size: 14px;
+        }
+
+.progress-bar-container {
+    width: 20%;
+    height: 4px;
+    display: inline-block;
+    background-color: #fab684;
+    position: relative;
+    top: 10px;
+}
+
+    .progress-bar-container:last-of-type {
+        display: none;
+    }
+
+    .progress-bar-container .progress-bar {
+        width: 0;
+        height: 100%;
+        background-color: #ed731a;
+    }
+
+.form-group > textarea {
+    overflow-y: scroll;
+    height: 280px;
+    resize: none;
+}
+
+#JobDescription {
+    overflow-y: scroll;
+    height: 207px;
+    resize: none;
+}
+
+.image-upload > input {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+.image-upload {
+    overflow: hidden;
+    text-align: center;
+    margin-top: 20px;
+    padding-bottom: 20px;
+}
+
+    .image-upload img {
+        margin-top: 25px;
+        border-radius: 15px;
+        height: 230px;
+        object-fit: contain;
+        transform: scale(1,1);
+        transition: all 0.2s ease-out;
+        cursor: pointer;
+    }
+
+        .image-upload img:hover {
+            transform: scale(1.3,1.3);
+        }
+
+.workdata {
+    height: 280px;
+    overflow: auto;
+}
+
+.edudata{
+    height:450px;
+    overflow:auto;
+}
+
+.skilldata  {
+    height: 200px;
+    overflow: auto;
+    margin-bottom:30px;
+}
+
+.portdata {
+    height: 200px;
+    overflow: auto;
+}
+
+.Landata {
+    height: 365px;
+    overflow: auto;
+}
+
+.form-control {
+    border: 1.5px solid #ced4da;
+}
+
+.slidehieght{
+    height:730px;
+
+}
+

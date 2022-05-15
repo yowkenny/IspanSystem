@@ -1,0 +1,259 @@
+﻿@using MSITTeam1.ViewModels
+@model LearnMap
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section Style {
+    <link href='https://fonts.googleapis.com/css?family=News+Cycle:400,700' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css">
+    <style>
+
+        .grid {
+            list-style: none;
+            margin-left: -40px;
+        }
+
+        .gc {
+            box-sizing: border-box;
+            display: inline-block;
+            margin-right: -0.25em;
+            min-height: 1px;
+            padding-left: 40px;
+            vertical-align: top;
+        }
+
+        .gc--1-of-3 {
+            width: 33.33333%;
+        }
+
+        .gc--2-of-3 {
+            width: 66.66666%;
+        }
+
+        .naccs .menu div {
+            padding: 15px 20px 15px 40px;
+            margin-bottom: 10px;
+            color: #777;
+            background: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            position: relative;
+            vertical-align: middle;
+            font-weight: 700;
+            transition: 1s all cubic-bezier(0.075, 0.82, 0.165, 1);
+        }
+
+            .naccs .menu div:hover {
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .naccs .menu div span.light {
+                height: 10px;
+                width: 10px;
+                position: absolute;
+                top: 24px;
+                left: 15px;
+                background-color: #1e3c84;
+                border-radius: 100%;
+                transition: 1s all cubic-bezier(0.075, 0.82, 0.165, 1);
+            }
+
+            .naccs .menu div span.textLight {
+                color: #1e3c84;
+                left: 0;
+                height: 100%;
+                width: 3px;
+                top: 0;
+                border-radius: 0;
+            }
+
+            .naccs .menu div.active span.light {
+                background-color: #fff;
+                left: 0;
+                height: 100%;
+                width: 3px;
+                top: 0;
+                border-radius: 0;
+            }
+
+            .naccs .menu div.active span.textLight {
+                color: #fff;
+                background-color: #1e3c84;
+                left: 0;
+                height: 100%;
+                width: 3px;
+                top: 0;
+                border-radius: 0;
+            }
+
+            .naccs .menu div.active {
+                background-color: #1e3c84;
+                padding: 15px 20px 15px 20px;
+            }
+
+        ul.nacc {
+            position: relative;
+            height: 0px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            transition: 0.5s all cubic-bezier(0.075, 0.82, 0.165, 1);
+        }
+
+            ul.nacc li {
+                opacity: 0;
+                transform: translateX(50px);
+                position: absolute;
+                list-style: none;
+                transition: 1s all cubic-bezier(0.075, 0.82, 0.165, 1);
+            }
+
+                ul.nacc li.active {
+                    transition-delay: 0.3s;
+                    z-index: 2;
+                    opacity: 1;
+                    transform: translateX(0px);
+                }
+
+                ul.nacc li p {
+                    margin: 0;
+                }
+    </style>
+}
+
+
+
+@{ var ClassName = "";
+    var ClassCate = "";
+    var FSkillselect = "";}
+
+<div class="container-fluid py-5" style="background-color: #EFEFEF;">
+    <div class="naccs container">
+        <form id="a">
+            <div class="row justify-content-center align-items-center mb-3">
+                <div class="col-md-4">
+                    <select class="form-select form-control" id="selectmap" name="selectmap">
+                        @{
+                            <option value="所有課程">所有課程</option>
+                            foreach (var item in Model.TStudioInformationright)
+                            {
+                                if (item.FClassName != FSkillselect && item.FClassName != "其他")
+                                {
+                                    <option value="@item.FClassName">@item.FClassName</option>
+                                }
+                                FSkillselect = item.FClassName;
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <input class="btn-style-two mt-3 mx-0" type="submit" id="createpaper" name="createpaper" value="確定" />
+                </div>
+            </div>
+        </form>
+        <div class="grid">
+            <div class="gc gc--1-of-3">
+                <div class="menu d-block my-0">
+                    @{
+                        foreach (var item in Model.TStudioInformationleft)
+                        {
+                            if (ClassName != item.FClassName && item.FClassName != "其他")
+                            {
+                                <div class="ActiveItem">
+                                    <span class="light"></span>
+                                    <span class="textLight">@item.FClassName</span>
+                                </div>
+                            }
+                            ClassName = item.FClassName;
+                        }
+                        ClassName = "";
+                    }
+
+                </div>
+            </div>
+            <div class="gc gc--2-of-3">
+                <ul class="nacc">
+                    @{
+                        foreach (var item in Model.TStudioInformationleft)
+                        {
+                            if (ClassName != item.FClassName && item.FClassName != "其他")
+                            {
+                                <li class="ActiveIi w-100">
+                                    <div class="row">
+                                        @foreach (var item2 in Model.TStudioInformationleft)
+                                        {
+                                            @if (item.FClassName == item2.FClassName && ClassCate != item2.FClassCategory)
+                                            {
+                                                <div class="col-md-6 d-block d-md-flex">
+                                                    <div class="p-3 shadow mb-4 bg-white w-100">
+                                                        <h4 class="font-weight-bold mb-2 ">@item2.FClassCategory</h4>
+                                                        <hr />
+                                                        @foreach (var item3 in Model.TStudioInformationleft)
+                                                        {
+                                                            @if (@item.FClassName == item2.FClassName && @item2.FClassCategory == item3.FClassCategory)
+                                                            {
+                                                                <h6 class="mb-2">@item3.FClassSkill</h6>
+                                                            }
+                                                        }
+                                                    </div>
+                                                </div>
+                                            }
+                                            ClassCate = item2.FClassCategory;
+                                        }
+
+                                    </div>
+                                </li>
+                            }
+                            ClassName = item.FClassName;
+                        }
+                    }
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+
+        window.onload = function () {
+            document.getElementById('selectmap').value = '@ViewBag.classmap';
+            var type = sessionStorage.getItem("type");
+            console.log(type);
+            if (type != '') {
+                document.getElementById('selectmap').value = type;
+
+                sessionStorage.setItem("type", "");
+                $('#createpaper').click();
+            }
+        }
+
+        // Acc
+        $(".naccs .menu").find(".ActiveItem").first().addClass("active");
+        $(".naccs ul").find(".ActiveIi").first().addClass("active");
+
+        var listItemHeight = $(".naccs ul")
+            .find(".ActiveIi").first()
+            .innerHeight();
+        $(".naccs ul").height(listItemHeight + "px");
+        $(document).on("click", ".naccs .menu div", function () {
+
+            var numberIndex = $(this).index();
+            if (!$(this).is("active")) {
+                $(".naccs .menu div").removeClass("active");
+                $(".naccs ul li").removeClass("active");
+
+                $(this).addClass("active");
+                $(".naccs ul").find("li:eq(" + numberIndex + ")").addClass("active");
+
+                var listItemHeight = $(".naccs ul")
+                    .find("li:eq(" + numberIndex + ")")
+                    .innerHeight();
+                $(".naccs ul").height(listItemHeight + "px");
+            }
+        });
+    </script>
+}

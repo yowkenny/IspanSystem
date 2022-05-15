@@ -1,0 +1,134 @@
+﻿@addTagHelper *, MSITTeam1
+@model MSITTeam1.ViewModels.TCompanyResumeReceiveViewModel
+
+@{
+    ViewData["Title"] = "StudentResumeDetail";
+}
+
+<div class="container-fluid p-4" style="background:#EFEFEF">
+    <div class="container">
+        <h2 class="pt-3">
+            <span class="icon icon-star-large"></span> 應徵職缺：@Model.JobName
+            <span class="icon icon-reply-large"></span>
+            <span class="icon icon-delete-large"></span>
+        </h2>
+        <div class="meta-data p-3">
+            <p>
+                <span class="font-weight-bold color-blue">@Model.FStudentName</span> 寄來的求職信<br />
+                <span class="date">收件時間：@(Convert.ToDateTime(Model.CreatTime).ToString("yyyy-MM-dd"))</span>
+            </p>
+        </div>
+        <div class="body p-3 h6 border bg-white shadow" style="border-radius:1.25rem;">
+            <div class="form-group">
+                <label asp-for="ContactPhone" class="control-label font-weight-bold">聯絡電話：</label>
+                <label class="col-form-label">@Model.ContactPhone</label>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContactEmail" class="control-label font-weight-bold">聯絡信箱：</label>
+                <label class="col-form-label">@Model.ContactEmail</label>
+            </div>
+            <div class="form-group">
+                <label class="control-label font-weight-bold">可聯絡時間：</label>
+                <label class="col-form-label">@Model.TimeToContact</label>
+            </div>
+            <div class="form-group">
+                <label class="control-label font-weight-bold">求職信內容</label>：
+                <pre class="py-2" style="line-height:1.5rem;">@Model.CoverLetter</pre>
+            </div>
+            <div>
+                <img src="data:image/gif;base64,@Model.ResumeImage" />
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button class="btn-style-two" type="button" data-toggle="modal" data-target="#interviewDeclineModal" onclick="">婉拒面試</button>
+        <button class="btn-style-two" type="button" data-toggle="modal" data-target="#interviewInvitationModal" onclick="">邀約面試</button>
+    </div>
+    <!--邀約面試Modal-->
+    <div class="modal fade" id="interviewInvitationModal" tabindex="-1" aria-labelledby="ProductEditModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ProductEditModalLabel">邀約面試</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <vc:interview-invitation job-id="@Model.JobId" resume-send-id="@Model.ResumeSendId"></vc:interview-invitation>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--婉拒面試Modal-->
+    <div class="modal fade" id="interviewDeclineModal" tabindex="-1" aria-labelledby="ProductEditModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ProductEditModalLabel">婉拒面試</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <vc:interview-decline job-id="@Model.JobId" resume-send-id="@Model.ResumeSendId"></vc:interview-decline>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        flatpickr('#InterviewTime', {
+            minDate: 'today',
+            dateFormat: 'Y-m-d'
+        });
+
+
+    </script>
+}
+@*@foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.JobId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ResumeId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MemberId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CompanyTaxid)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.JobName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactPhone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactEmail)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ComReadOrNot)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeToContact)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CoverLetter)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModifyTime)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ResumeSendId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ResumeSendId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ResumeSendId">Delete</a>
+                </td>
+            </tr>
+    }*@

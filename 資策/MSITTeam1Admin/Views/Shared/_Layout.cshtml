@@ -1,0 +1,176 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MSITTeam1Admin</title>
+    <!-- Standard -->
+    <link rel="shortcut icon" href="http://placehold.it/64.png/000/fff">
+    <!-- Retina iPad Touch Icon-->
+    <link rel="apple-touch-icon" sizes="144x144" href="http://placehold.it/144.png/000/fff">
+    <!-- Retina iPhone Touch Icon-->
+    <link rel="apple-touch-icon" sizes="114x114" href="http://placehold.it/114.png/000/fff">
+    <!-- Standard iPad Touch Icon-->
+    <link rel="apple-touch-icon" sizes="72x72" href="http://placehold.it/72.png/000/fff">
+    <!-- Standard iPhone Touch Icon-->
+    <link rel="apple-touch-icon" sizes="57x57" href="http://placehold.it/57.png/000/fff">
+    <!-- Styles -->
+    <link href="~/css/lib/calendar2/pignose.calendar.min.css" rel="stylesheet">
+    <link href="~/css/lib/chartist/chartist.min.css" rel="stylesheet">
+    <link href="~/css/lib/font-awesome.min.css" rel="stylesheet">
+    <link href="~/css/lib/themify-icons.css" rel="stylesheet">
+    <link href="~/css/lib/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/css/lib/owl.theme.default.min.css" rel="stylesheet" />
+    <link href="~/css/lib/weather-icons.css" rel="stylesheet" />
+    <link href="~/css/lib/menubar/sidebar.css" rel="stylesheet">
+    <link href="~/css/lib/bootstrap.min.css" rel="stylesheet">
+    <link href="~/css/lib/helper.css" rel="stylesheet">
+    <link href="~/css/lib/data-table/buttons.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/lib/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="~/css/barRating.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    @await RenderSectionAsync("Style", required: false)
+</head>
+<body>
+    <div class="sidebar sidebar-hide-to-small sidebar-shrink sidebar-gestures">
+        <div class="nano">
+            <div class="nano-content">
+                <ul>
+                    <li class="logo">
+                        <a href="@Url.Action("Index","Home")">
+                            <span><img class="w-50" src="~/images/footerLOGO.png" alt="" /></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="sidebar-sub-toggle">
+                            <i class="fas fa-tasks"></i>題庫系統 <span class="sidebar-collapse-icon ti-angle-down"></span>
+                        </a>
+                        <ul>
+                            <li><a href="@Url.Action("Index","QuesBankSysAdmin")">題庫管理</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="sidebar-sub-toggle">
+                            <i class="fas fa-chart-line"></i>成績檢視及分析 <span class="sidebar-collapse-icon ti-angle-down"></span>
+                        </a>
+                        <ul>
+                            <li><a href="@Url.Action("Index","BackGrade")">前後測驗成績</a></li>
+                            <li><a href="@Url.Action("skillIndex","BackGrade")">技能測驗成績</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a class="sidebar-sub-toggle">
+                            <i class="far fa-clipboard"></i>產品管理<span class="sidebar-collapse-icon ti-angle-down"></span>
+                        </a>
+                        <ul>
+                            <li><a href="@Url.Action("Index","ProductsAdmin")">產品維護</a></li>
+                        </ul>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /# sidebar -->
+
+    <div class="header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="float-left">
+                        <div class="hamburger sidebar-toggle">
+                            <span class="line"></span>
+                            <span class="line"></span>
+                            <span class="line"></span>
+                        </div>
+                    </div>
+                    <div class="float-right">
+                        <div class="dropdown dib">
+                            <div class="header-icon" data-toggle="dropdown">
+                                <span class="user-avatar">
+                                    資展國際
+                                    <i class="ti-angle-down f-s-10"></i>
+                                </span>
+                                @*<div class="drop-down dropdown-profile dropdown-menu dropdown-menu-right">
+                                    <div class="dropdown-content-body">
+                                        <ul>
+                                            <li>
+                                                <a href="@Url.Content("~/Login/Index")">
+                                                    <i class="ti-power-off"></i>
+                                                    <span>Logout</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-wrap">
+        <div class="main">
+            <div class="container-fluid">
+                <!-- /# row -->
+                <section id="main-content">
+                    @RenderBody()
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="footer">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- jquery vendor -->
+    <script src="~/js/lib/jquery.min.js"></script>
+    <script src="~/js/lib/jquery.nanoscroller.min.js"></script>
+    <!-- nano scroller -->
+    <script src="~/js/lib/menubar/sidebar.js"></script>
+    <script src="~/js/lib/preloader/pace.min.js"></script>
+    <!-- sidebar -->
+    <script src="~/js/lib/bootstrap.min.js"></script>
+    <script src="~/js/scripts.js"></script>
+    <!-- bootstrap -->
+    <script src="~/js/lib/calendar-2/moment.latest.min.js"></script>
+    <script src="~/js/lib/calendar-2/pignose.calendar.min.js"></script>
+    <script src="~/js/lib/calendar-2/pignose.init.js"></script>
+    <script src="~/js/lib/weather/jquery.simpleWeather.min.js"></script>
+    <script src="~/js/lib/weather/weather-init.js"></script>
+    <script src="~/js/lib/circle-progress/circle-progress.min.js"></script>
+    <script src="~/js/lib/circle-progress/circle-progress-init.js"></script>
+    <script src="~/js/lib/chartist/chartist.min.js"></script>
+    <script src="~/js/lib/sparklinechart/jquery.sparkline.min.js"></script>
+    <script src="~/js/lib/sparklinechart/sparkline.init.js"></script>
+    <script src="~/js/lib/owl-carousel/owl.carousel.min.js"></script>
+    <script src="~/js/lib/owl-carousel/owl.carousel-init.js"></script>
+    <script src="~/js/lib/sweetalert/sweetalert.min.js"></script>
+    <script src="~/js/lib/sweetalert/sweetalert.init.js"></script>
+    <script src="~/js/lib/data-table/jquery.dataTables.min.js"></script>
+    <script src="~/js/lib/data-table/datatables.min.js"></script>
+    <script src="~/js/lib/data-table/dataTables.buttons.min.js"></script>
+    <script src="~/js/lib/data-table/buttons.flash.min.js"></script>
+    <script src="~/js/lib/data-table/jszip.min.js"></script>
+    @*<script src="~/js/lib/data-table/pdfmake.min.js"></script>*@
+    <script src="~/js/lib/data-table/vfs_fonts.js"></script>
+    <script src="~/js/lib/data-table/buttons.html5.min.js"></script>
+    <script src="~/js/lib/data-table/buttons.print.min.js"></script>
+    <script src="~/js/lib/data-table/datatables-init.js"></script>
+    <script src="~/js/lib/data-table/buttons.colVis.min.js"></script>
+    <script src="~/js/sweetalert2.all.min.js"></script>
+    <script src="~/js/barRating.init.js"></script>
+    <script src="~/js/lib/barRating/jquery.barrating.js"></script>
+    <script src="https://your-site-or-cdn.com/fontawesome/v6.1.1/js/all.js" data-auto-replace-svg="nest"></script>
+    <!-- scripit init-->
+    <script src="~/js/dashboard2.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

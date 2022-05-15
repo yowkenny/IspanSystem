@@ -1,0 +1,200 @@
+﻿@model IEnumerable<MSITTeam1.ViewModels.CTestPaperViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="auto-container">
+    <div id="start">
+    <form id="go">
+        <div class="row py-4 justify-content-center align-items-center">
+            <div class="col-md-4">
+                <div class="row justify-content-center">
+                    <div class="">
+                        <div class="input-group mb-2 mr-sm-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">識別碼</div>
+                            </div>
+                            <input type="text" class="form-control" id="inlineFormInputGroupUsername2" name="txtidentify" placeholder="請輸入識別碼">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ml-0 ml-md-3 ml-lg-0">
+                <input class="btn-style-two mt-3" type="button" id="createpaper" name="createpaper" value="確定" />
+            </div>
+        </div>
+    </form>
+   </div>
+    @{
+        if (Model != null)
+        {
+            <div class="py-4 ">
+                    <div class="row bg-beige justify-content-center p-1 p-md-4 py-3 text-center">
+                        <div class="py-1 col-md-12 col-lg-6"><h4>課程名稱 : @ViewBag.Classname</h4></div>
+                        <div class="py-1 col-md-6 col-lg-3"><h4>名字 : @ViewBag.Name</h4></div>
+                        <div class="py-1 col-md-6 col-lg-3"><h4>驗證碼 : @ViewBag.Identify</h4></div>
+                    </div>
+            </div>
+            int count = 1;
+            int tcount = 1;
+            int topicId = 0;
+            foreach (var item in Model)
+            {
+                if (topicId != item.fQuestionID)
+                {
+                    <h5 class="my-2 mt-3 font-weight-bold">@tcount. @Html.DisplayFor(modelItem => item.fQuestion)</h5>
+                    topicId = item.fQuestionID;
+                    tcount++;
+                }
+
+                <div>
+                    <input type="radio" id="@count" name="@item.fQuestionID" value="@item.fCorrectAnswer">
+                    <label for="@count" class="@item.fCorrectAnswer" style="font-size:18px;">  @Html.Raw(item.fChoice)</label>
+                </div>
+                count++;
+            }
+
+            <br />
+            <br />
+            <div class="sec-title text-center">
+                <button class="btn-style-two mt-3" type="button" id="button1">送出</button>
+                <button class="btn-style-two mt-3" type="button" id="button2" style="display:none">成績檢視</button>
+            </div>
+        }
+    }
+    <div div style="display:none" id="div1" class="alert alert-info"></div>
+    <form name="classgrade" method="post">
+        <input type="hidden" id="FAccountId" name="FAccountId" value="@ViewBag.Account">
+        <input type="hidden" id="FClassCode" name="FClassCode" value="@ViewBag.Identify">
+        <input type="hidden" id="FBeforeClassGrade" name="FBeforeClassGrade" value="">
+    </form>
+</div>
+
+<script>
+    const btn = document.querySelector("#button1");
+    const btn3 = document.querySelector("#button2");
+    const btn1 = document.querySelector("#createpaper");
+    const divAlert = document.querySelector("#div1");
+    if ("@Model" == "") {} else {
+        document.querySelector("#start").style.display = 'none';
+    }
+
+
+
+        btn1.addEventListener('click', (evt) => {
+            evt.preventDefault();
+            if ("@ViewBag.MemberId" == "") {
+                Swal.fire({
+                    icon: 'info',
+                    title: '請先登入會員',
+                }).then((result) => {
+                    if (result.isConfirmed) { location = '@Url.Action("Index", "Student_Login")' }
+                }
+                )
+            } else {
+                $('#go').submit();
+            }
+        })
+
+    btn.addEventListener('click', (evt) => {
+        evt.preventDefault();
+        var anscount = 0
+        var count = 0
+         @{
+             if (Model != null)
+             {
+                 int id = 0;
+                 foreach (var item in Model)
+                 {
+                     if (id != item.fQuestionID)
+                     {
+                 @:var a = $('input[name=@item.fQuestionID]:checked').val();
+                 @:if (1 == a) { anscount++; }
+                 @:count++
+                 id = item.fQuestionID;
+
+
+                  @:{ var b = $('input[name=@item.fQuestionID]:checked').html(); }
+                  //逐筆寫入?
+
+
+                     }
+                 }
+
+             }
+          }
+        //divAlert.style.display = "block"
+        divAlert.innerHTML = Math.round((anscount / count) * 100)
+        document.querySelector("#FBeforeClassGrade").value = Math.round((anscount / count) * 100)
+        $('input').hide();
+        btn.style.display = 'none';
+
+
+
+        const formData = new FormData(document.classgrade);
+        fetch('@Url.Action("Grade", "Grade")', {
+            method: 'POST',
+            body: formData
+        }).then(Response => Response.text()).then(
+            function (j) {
+                if (j == "after") {
+                    @{
+                        if (Model != null)
+                        {
+                            int fid = 0;
+                            foreach (var item in Model)
+                            {
+                                if (fid != item.fQuestionID)
+                                {
+                                @:var b = $('input[name=@item.fQuestionID]:checked').val();
+                                @:if (1 == b) { anscount++; $('input[name=@item.fQuestionID]:checked').next().css("color", "green"); }
+                                @:if (1 != b) { $("input[name=@item.fQuestionID][value='1']").next().css("color", "red"); }
+                                fid = item.fQuestionID;
+                                }
+                            }
+                        }
+                     }
+                    btn3.style.display = 'block';
+                    btn3.addEventListener('click', (evt) => {
+                        evt.preventDefault();
+                        sessionStorage.setItem("classEX", $('#FClassCode').val());
+
+                        location = '@Url.Action("Index", "ShowClassGrade")';
+
+                    })
+                } else if (j == "before") {
+                    sessionStorage.setItem("classEX", $('#FClassCode').val());
+
+                    location = '@Url.Action("Index", "ShowClassGrade")';
+                }
+                else {
+                     @{
+                        if (Model != null)
+                        {
+                            int fid = 0;
+                            foreach (var item in Model)
+                            {
+                                if (fid != item.fQuestionID)
+                                {
+                                @:var b = $('input[name=@item.fQuestionID]:checked').val();
+                                @:if (1 == b) { anscount++; $('input[name=@item.fQuestionID]:checked').next().css("color", "green"); }
+                                @:if (1 != b) { $("input[name=@item.fQuestionID][value='1']").next().css("color", "red"); }
+                                fid = item.fQuestionID;
+                                }
+                            }
+                        }
+                     }
+                     btn3.style.display = 'block';
+                    btn3.addEventListener('click', (evt) => {
+                        evt.preventDefault();
+                        sessionStorage.setItem("classEX", $('#FClassCode').val());
+
+                        location = '@Url.Action("Index", "ShowClassGrade")';
+                    })
+                }
+            }
+        )
+
+
+    })
+</script>
+

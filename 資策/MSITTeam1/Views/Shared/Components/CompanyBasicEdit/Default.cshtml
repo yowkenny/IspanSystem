@@ -1,0 +1,92 @@
+﻿@addTagHelper *, MSITTeam1
+@model MSITTeam1.ViewModels.CCompanyBasicViewModel
+
+
+<div class="row">
+    <div class="col-12">
+        <form id="companyBasicEditForm">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input id="CompanyTaxid" asp-for="CompanyTaxid" class="form-control" type="hidden" />
+            </div>
+            <div class="form-group">
+                <label asp-for="FName" class="control-label"></label>
+                <input id="FName" asp-for="FName" class="form-control" required />
+                <span asp-validation-for="FName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FPhone" class="control-label"></label>
+                <div class="row mx-0 align-items-center">
+                    <div class="col-3 px-0">
+                        <input id="FPhoneCode" asp-for="FPhoneCode" class="form-control" type="text" />
+                    </div>
+                    <div class="col-1 px-0 text-center">—</div>
+                    <div class="col-8 px-0">
+                        <input id="FPhone" asp-for="FPhone" class="form-control" type="text" />
+                    </div>
+                </div>
+                <span asp-validation-for="FPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FFax" class="control-label"></label>
+                <div class="row mx-0 align-items-center">
+                    <div class="col-3 px-0">
+                        <input id="FFaxCode" asp-for="FFaxCode" class="form-control" type="text" />
+                    </div>
+                    <div class="col-1 px-0 text-center">—</div>
+                    <div class="col-8 px-0">
+                        <input id="FFax" asp-for="FFax" class="form-control" type="text" />
+                    </div>
+                </div>
+                <span asp-validation-for="FFax" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FContactPerson" class="control-label"></label>
+                <input id="FContactPerson" asp-for="FContactPerson" class="form-control" />
+                <span asp-validation-for="FContactPerson" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FCapitalAmount" class="control-label"></label>
+                <input id="FCapitalAmount" asp-for="FCapitalAmount" class="form-control" />
+                <span asp-validation-for="FCapitalAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FWebsite" class="control-label"></label>
+                <input id="FWebsite" asp-for="FWebsite" class="form-control" />
+                <span asp-validation-for="FWebsite" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FRelatedLink" class="control-label"></label>
+                <input id="FRelatedLink" asp-for="FRelatedLink" class="form-control" />
+                <span asp-validation-for="FRelatedLink" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FAddress" class="control-label"></label>
+                    <vc:selector city="@ViewBag.City" district="@ViewBag.District"></vc:selector>
+                <input id="FAddress" asp-for="FAddress" class="form-control mt-2" />
+                <span asp-validation-for="FAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FEmail" class="control-label"></label>
+                <input id="FEmail" asp-for="FEmail" class="form-control" />
+                <span asp-validation-for="FEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FBenefits" class="control-label"></label>
+                <textarea id="FBenefits" asp-for="FBenefits" class="form-control" style="overflow-y:scroll;resize:none"></textarea>
+                <span asp-validation-for="FBenefits" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FCustomInfo" class="control-label"></label>
+                <textarea id="FCustomInfo" asp-for="FCustomInfo" class="form-control" style="overflow-y:scroll;resize:none"></textarea>
+                <span asp-validation-for="FCustomInfo" class="text-danger"></span>
+            </div>
+        </form>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉視窗</button>
+            <button id="savechanges" type="button" class="btn btn-primary">儲存變更</button>
+        </div>
+
+    </div>
+</div>
+

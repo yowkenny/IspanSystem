@@ -1,0 +1,160 @@
+﻿@model IEnumerable<MSITTeam1.ViewModels.classgradeselect>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="auto-container">
+    @{
+        <form id="a" name="a" method="post">
+            <div class="row py-4 justify-content-center align-items-center">
+                <div class="col-md-4">
+                    <div class="row justify-content-center">
+                        <div class="input-group my-2 mx-sm-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">識別碼</div>
+                            </div>
+                            <input type="text" class="form-control" id="inlineFormInputGroupUsername2" name="txtidentify" placeholder="請輸入識別碼" value="@ViewBag.txtidentify">
+                        </div>
+                    </div>
+                </div>
+                <div class="ml-0 ml-md-3 ml-lg-3">
+                    <input class="btn-style-two mt-3" type="submit" id="createpaper" name="createpaper" value="確定" />
+                </div>
+            </div>
+            <div class="row justify-content-center" id="companyselect">
+                <div class="col-md-3 justify-content-center">
+                    <div class="input-group my-2 mx-sm-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">顯示資料</div>
+                        </div>
+                        <select id="studentname" name="studentname" class="form-control">
+                            <option>選擇企業員工</option>
+                        </select>
+                        <input type="hidden" class="form-control" id="txtaccount" name="txtaccount" value="">
+                    </div>
+                </div>
+            </div>
+        </form>
+        }
+    @{
+        if (@ViewBag.showavg != null)
+        {
+            <div class="container">
+                <div class="pb-4 ">
+                        <div class="row bg-beige justify-content-center p-1 p-md-3 py-3 text-center">
+                            <div class="py-3 col-md-12 ">
+                                <h3 class="font-weight-bold">課程名稱 : @ViewBag.classname</h3>
+                            </div>
+                            <div class="py-3 col-md-12">
+                                <h3 class="font-weight-bold">姓名 : @ViewBag.name </h3>
+                            </div>
+                            <div class="py-1 col-md-4">
+                                <h4>綜合成績 :@ViewBag.showavgself</h4>
+                            </div>
+                            <div class="py-1 col-md-4">
+                                <h4>課前成績 :@ViewBag.showbeforeself</h4>
+                            </div>
+                            <div class="py-1 col-md-4">
+                                <h4>課後成績 :@ViewBag.showAfterself</h4>
+                            </div>
+                        </div>
+                </div>
+                <canvas id="after" width="50" height="30" class="mb-4"></canvas>
+            </div>
+        }
+    }
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+@section Scripts{
+    <script>
+        const formData = new FormData(document.a);
+        const selectElement = document.querySelector('#studentname');
+        if (selectElement) {
+            selectElement.addEventListener('change', (evt) => {
+                evt.preventDefault();
+                $('#txtaccount').val($('#studentname').val());
+                $('#a').submit();
+            })
+        }
+        $('#companyselect').hide();
+
+
+            @{
+                if (ViewBag.memType == "2" && @ViewBag.showavgself != 0) {
+                @:$('#companyselect').show();
+                }
+            }
+
+        window.onload = function () {
+
+            var classEX = sessionStorage.getItem("classEX");
+            console.log(classEX);
+            if (classEX != '') {
+                document.getElementById('inlineFormInputGroupUsername2').value = classEX;
+
+                sessionStorage.setItem("classEX", "");
+                $('#createpaper').click();
+            }
+            if ('@ViewBag.memType' == '2') {
+                fetch('@Url.Action("Employee", "ShowClassGrade")', {
+                    method: 'POST',
+                    body: formData
+                }).then(Response => Response.json())
+                    .then(function (j) {
+                        console.log(j);
+                        for (var row in j) {
+                            $("#studentname").append("<option value='" + j[row].account + "'>" + j[row].name + "</option>");
+                        }
+                    });
+            }
+
+    }
+    //const b = document.querySelector('#createpaper');
+    //b.addEventListener('click', (evt) => {
+    //    evt.preventDefault();
+    //    $('#companyselect').show();
+    //})
+    /*}*/
+
+
+        const ctx3 = document.getElementById('after');
+        if (ctx3) {
+            ctx = ctx3.getContext('2d');
+            var after = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['0~10', '10~20', '20~30', '30~40', '40~50', '50~60', '60~70', '70~80', '80~90', '90~100'],
+            datasets: [{
+                label: '課前成績',
+                data: [@ViewBag.showbefore],
+                borderColor: "rgba(0, 123, 255, 0.9)",
+                backgroundColor: "rgba(0, 123, 255, 0.5)"
+            }, {
+                    label: '課後成績',
+                    data:[@ViewBag.showAfter],
+                    borderColor: "#E56060",
+                    backgroundColor: "#FF6B6B"
+                             },{
+                        label: '平均成績',
+                    data:[@ViewBag.showavg],
+                   borderColor: "#56A560",
+                    backgroundColor: "#6BCB77"
+                    }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    min: 0,
+                    max: @ViewBag.count,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+        }
+
+    </script>
+}
